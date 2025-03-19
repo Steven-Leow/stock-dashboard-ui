@@ -1,10 +1,15 @@
 <template>
   <div class="col-3 bg-light border-end p-3 d-flex flex-column">
+    <!-- Home Button -->
+    <button class="btn btn-secondary mb-3" @click="$emit('reset')">Home</button>
+
+    <!-- Search Bar -->
     <input
       v-model="searchQuery"
       type="text"
       class="form-control mb-2"
       placeholder="Search stocks..."
+      @keyup.enter="submitSearch"
     />
     <button class="btn btn-primary mb-3" @click="submitSearch">Search</button>
     <h5 class="text-muted">Menu</h5>
@@ -17,15 +22,13 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return { searchQuery: "" };
-  },
-  methods: {
-    submitSearch() {
-      this.$emit("search", this.searchQuery.toUpperCase());
-    },
-  },
+<script setup>
+import { ref } from "vue";
+
+const emit = defineEmits(["search"]);
+const searchQuery = ref("");
+
+const submitSearch = () => {
+  emit("search", searchQuery.value.toUpperCase());
 };
 </script>
